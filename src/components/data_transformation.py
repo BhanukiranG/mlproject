@@ -3,10 +3,10 @@ from dataclasses import dataclass
 
 import numpy as np 
 import pandas as pd
-from sklearn.compose import ColumnTransformer #used for pipeline
-from sklearn.impute import SimpleImputer #for missing values
+from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder,StandardScaler #for changing strings to numbers
+from sklearn.preprocessing import OneHotEncoder,StandardScaler
 
 from src.exception import CustomException
 from src.logger import logging
@@ -16,12 +16,12 @@ from src.utils import save_object
 
 @dataclass
 class DataTransformationConfig:
-    preprocessor_obj_file_path=os.path.join('artifacts',"proprocessor.pkl") #pickle file serializes the wide range of objects
+    preprocessor_obj_file_path=os.path.join('artifacts',"proprocessor.pkl")
 
 class DataTransformation:
     def __init__(self):
         self.data_transformation_config=DataTransformationConfig()
-    #Data Transformer Function
+
     def get_data_transformer_object(self):
         '''
         This function si responsible for data trnasformation
@@ -36,20 +36,20 @@ class DataTransformation:
                 "lunch",
                 "test_preparation_course",
             ]
-            #for numericals
+
             num_pipeline= Pipeline(
                 steps=[
-                ("imputer",SimpleImputer(strategy="median")),#to handle missing values with median
-                ("scaler",StandardScaler()) #scaling the no.s
+                ("imputer",SimpleImputer(strategy="median")),
+                ("scaler",StandardScaler())
 
                 ]
             )
-            #for categorical
+
             cat_pipeline=Pipeline(
 
                 steps=[
-                ("imputer",SimpleImputer(strategy="most_frequent")),#to handle missing values using most frequently occured
-                ("one_hot_encoder",OneHotEncoder()),#converts categorical to numericals
+                ("imputer",SimpleImputer(strategy="most_frequent")),
+                ("one_hot_encoder",OneHotEncoder()),
                 ("scaler",StandardScaler(with_mean=False))
                 ]
 
@@ -57,7 +57,7 @@ class DataTransformation:
 
             logging.info(f"Categorical columns: {categorical_columns}")
             logging.info(f"Numerical columns: {numerical_columns}")
-            #pipeline
+
             preprocessor=ColumnTransformer(
                 [
                 ("num_pipeline",num_pipeline,numerical_columns),
