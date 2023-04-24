@@ -11,14 +11,14 @@ app=application
 
 ## Route for a home page
 
-@app.route('/')
-def index():
-    return render_template('index.html') 
+# @app.route('/')
+# def index():
+#     return render_template('index.html') 
 
-@app.route('/predictdata',methods=['GET','POST'])
+@app.route('/',methods=['GET','POST'])
 def predict_datapoint():
     if request.method=='GET':
-        return render_template('home.html')
+        return render_template('index.html')
     else:
         data=CustomData(
             gender=request.form.get('gender'),
